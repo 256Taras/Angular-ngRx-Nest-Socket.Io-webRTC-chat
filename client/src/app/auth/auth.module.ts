@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { SingInComponent } from './components/sing-in/sing-in.component';
 import {RouterModule, Routes} from "@angular/router";
+
+import { SignUpComponent } from 'src/app/auth/components/sign-up/sign-up.component';
+import { SingInComponent } from 'src/app/auth/components/sing-in/sing-in.component';
+import {ReactiveFormsModule} from "@angular/forms";
+
 
 const routes:Routes = [
   {
@@ -19,7 +22,8 @@ const routes:Routes = [
   declarations: [SignUpComponent, SingInComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ReactiveFormsModule
   ]
 })
 export class AuthModule { }
