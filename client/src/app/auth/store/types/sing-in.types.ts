@@ -1,0 +1,6 @@
+
+export enum SingInTypes {
+  START='[AUTH] SING IN START',
+  SUCCESS='[AUTH] SING IN SUCCESS',
+  FAILURE ='[AUTH] SING IN FAILURE ',
+}

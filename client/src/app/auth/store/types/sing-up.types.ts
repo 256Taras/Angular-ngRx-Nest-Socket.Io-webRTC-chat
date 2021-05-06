@@ -1,0 +1,6 @@
+
+export enum SingUpTypes {
+  START='[AUTH] SING UP START',
+  SUCCESS='[AUTH] SING UP SUCCESS',
+  FAILURE ='[AUTH] SING UP FAILURE ',
+}
