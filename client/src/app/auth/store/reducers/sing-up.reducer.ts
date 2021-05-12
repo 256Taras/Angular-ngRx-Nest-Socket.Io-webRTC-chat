@@ -20,7 +20,6 @@ const initialState: ISingUpState = {
     phone: null,
     code: null ,
     avatar: null,
-    avatarColor: null,
   },
   isSubmitting: false
 }

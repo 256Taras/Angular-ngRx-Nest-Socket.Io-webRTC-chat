@@ -4,5 +4,5 @@ export interface UserInterface {
   phone?:number | null;
   code?:number | null;
   avatar?:string | null;
-  avatarColor?:| null;
+
 }
