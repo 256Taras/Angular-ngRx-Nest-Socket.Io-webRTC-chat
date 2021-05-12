@@ -7,10 +7,19 @@ class User {
     id: number;
 
     @Column()
-    username: string;
+    nikname: string;
 
     @Column()
-    telephone: number;
+    firstname: string;
+
+    @Column()
+    lastname: string
+
+    @Column()
+    avatar: string;
+
+    @Column()
+    phone: number;
 }
 
 export default User
