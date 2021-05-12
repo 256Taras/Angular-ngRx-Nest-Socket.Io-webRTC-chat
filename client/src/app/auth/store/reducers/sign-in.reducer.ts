@@ -1,17 +1,18 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import { SignInAction } from '../action-creators/sign-in.action';
-import {SignUpAction} from "../action-creators/sign-up.action";
+import {AddUserInitialsAction} from "../action-creators/sign-up.action";
+
 
 
 export interface SingUpStateInterface {
-  email: null | string;
-  password: null | string;
+  firstname: null | string;
+  lastname: null | string;
   isSubmitting: boolean;
 }
 
 const initialState: SingUpStateInterface = {
-  email: null,
-  password: null,
+  firstname: null,
+  lastname: null,
   isSubmitting: false
 }
 
@@ -24,7 +25,7 @@ const signIn = createReducer(
       ...state,
       isSubmitting: true
     })
-  )
+  ),
 )
 
 

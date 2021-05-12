@@ -9,6 +9,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
 import {EffectsModule} from "@ngrx/effects";
+import { WelcomeComponent } from './client/src/app/auth/components/sign-up/steps/welcome/welcome.component';
 
 
 const DTconfig = {
@@ -18,7 +19,8 @@ const DTconfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

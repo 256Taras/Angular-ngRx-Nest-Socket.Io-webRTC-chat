@@ -1,12 +1,22 @@
-<div class="container">
-  <div class="wrapper">
-    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
-      <p class="title">Sing Up</p>
-      <input type="text" class="input-item" autocomplete="true" placeholder="your email" formControlName="email">
-      <input type="text" class="input-item" autocomplete="true" placeholder="password" formControlName="password">
-      <input type="text" class="input-item" autocomplete="true" placeholder="confirm password" formControlName="confirmPassword">
-      <button class="button-submit" type="submit">submit</button>
-      <a  [routerLink]="['/sing-in']" class="link-text">go to sing-in?</a>
-    </form>
-  </div>
-</div>
+<am-step>
+
+
+
+  <am-progress-step>
+    <am-enter-name></am-enter-name>
+  </am-progress-step>
+
+  <am-progress-step>
+    <am-enter-phone></am-enter-phone>
+  </am-progress-step>
+
+
+  <am-progress-step>
+    <am-enter-code></am-enter-code>
+  </am-progress-step>
+
+  <am-progress-step>
+    <am-choose-avatar></am-choose-avatar>
+  </am-progress-step>
+
+</am-step>

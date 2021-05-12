@@ -1,16 +1,27 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {SignUpAction} from "../action-creators/sign-up.action";
+import {
+  AddUserCodeAction,
+  AddUserInitialsAction,
+  AddUserPhoneAction,
+  SignUpAction
+} from "../action-creators/sign-up.action";
+import {UserInterface} from "../../../shared/interfaces/user.interface";
 
 
 export interface ISingUpState {
-  email: null | string;
-  password: null | string;
+  user: UserInterface;
   isSubmitting: boolean;
 }
 
 const initialState: ISingUpState = {
-  email: null,
-  password: null,
+  user: {
+    firstname: null,
+    lastname: null,
+    phone: null,
+    code: null ,
+    avatar: null,
+    avatarColor: null,
+  },
   isSubmitting: false
 }
 
@@ -22,6 +33,41 @@ const signUp = createReducer(
     (state): ISingUpState => ({
       ...state,
       isSubmitting: true
+    })
+  ),
+  on(
+    AddUserInitialsAction,
+    (state, {user}): ISingUpState => ({
+      ...state,
+      user: {
+        ...state.user,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        // phone: state.user.phone,
+        // code: state.user.code,
+        // avatar: state.user.avatar,
+        // avatarColor: state.user.avatarColor,
+      }
+    })
+  ),
+  on(
+    AddUserPhoneAction,
+    (state, {phone}): ISingUpState => ({
+      ...state,
+      user: {
+        ...state.user,
+         phone
+      }
+    })
+  ),
+  on(
+    AddUserCodeAction,
+    (state, {code}): ISingUpState => ({
+      ...state,
+      user: {
+        ...state.user,
+         code,
+      }
     })
   )
 )

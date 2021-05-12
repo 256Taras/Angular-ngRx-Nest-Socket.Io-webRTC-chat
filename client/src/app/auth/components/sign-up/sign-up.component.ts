@@ -1,44 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {select, Store} from "@ngrx/store";
-import {Observable} from 'rxjs/internal/Observable';
-import {SignUpAction} from '../../store/action-creators/sign-up.action';
-import {isSubmittingSelector} from "../../store/selectors/sign-up.selector";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+
+
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SignUpComponent implements OnInit {
+constructor() {
+}
 
-  public formG: FormGroup;
-  public isSubmitting$: Observable<boolean>;
+ngOnInit() {
+}
 
-  constructor(private formBuilder: FormBuilder, private store: Store) {
-  }
-
-  public ngOnInit(): void {
-    this.initForm();
-    this.initValues();
-  }
-
-  public initForm() {
-    this.formG = this.formBuilder.group({
-      email: ['', Validators.required, , Validators.email],
-      password: ['', Validators.required,],
-      confirmPassword: ['', Validators.required,],
-    })
-  }
-
-  public onSubmit(): void {
-    this.store.dispatch(SignUpAction(this.formG.value));
-    console.log(this.formG.value);
-    console.log(this.formG.valid);
-  }
-
-  private initValues() {
-    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
-    console.log(this.isSubmitting$)
-  }
 }

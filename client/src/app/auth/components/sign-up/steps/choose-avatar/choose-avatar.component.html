@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="wrapper">
+    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
+      <p class="title">Choose user avatar or color </p>
+
+      <div class="avatar-container">
+
+       <span *ngIf="!avatar; else showAvatarImg">
+          <div class="user-avatar" (click)="openUploadAvatar(AVATAR)" >
+        <span class="user-initials">
+        ti
+        </span>
+        </div>
+       </span>
+
+        <ng-template #showAvatarImg class="user-avatar" >
+          <img src="{{avatar}}" alt="your avatar" class="user-selected-avatar" (click)="openUploadAvatar(AVATAR)">
+        </ng-template>
+
+      </div>
+
+
+      <input #AVATAR type="file" accept="image/*" class="input-hide" formControlName="userAvatar" (change)="uploadAvatar($event.target)">
+
+      <div class="button-container">
+        <button prevStep class="button-submit">prev</button>
+        <button nextStep class="button-submit" type="submit">sing up</button>
+      </div>
+    </form>
+  </div>
+</div>

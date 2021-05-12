@@ -24,7 +24,7 @@ export class SingInComponent implements OnInit {
   }
 
   public onSubmit():void{
-    console.log(this.formG.value)
-    console.log(this.formG.valid)
+    // console.log(this.formG.value)
+    // console.log(this.formG.valid)
   }
 }

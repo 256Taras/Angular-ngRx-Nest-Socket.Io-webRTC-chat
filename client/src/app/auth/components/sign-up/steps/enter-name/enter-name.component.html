@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="wrapper">
+    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
+      <p class="title">Step UserInterface Initials</p>
+      <input type="text" class="{{
+      formG.get('firstname').errors?.required  && formG?.get('firstname').touched ||
+      formG.get('firstname').errors?.minlength  && formG?.get('firstname').touched ||
+      formG.get('firstname').errors?.maxlength  && formG?.get('firstname').touched
+      ?'error-input' : 'input-item'}}" autocomplete="true" placeholder="first name" formControlName="firstname">
+
+      <span
+        *ngIf="formG?.get('firstname').invalid  && formG?.get('firstname').touched  && formG?.get('firstname').dirty">
+        <am-error-messages *ngIf="formG?.get('firstname').errors?.required" errorMessages="Поле не може бути пусти!">
+      </am-error-messages>
+      <am-error-messages *ngIf="formG.get('firstname').errors?.minlength" errorMessages="Імя закоротке!">
+      </am-error-messages>
+      <am-error-messages *ngIf="formG.get('firstname').errors?.maxlength" errorMessages="Імя дуже велике!">
+      </am-error-messages>
+  </span>
+
+
+      <input type="text" class="{{
+      formG.get('lastname').errors?.required  && formG?.get('lastname').touched ||
+      formG.get('lastname').errors?.minlength  && formG?.get('lastname').touched ||
+      formG.get('lastname').errors?.maxlength  && formG?.get('lastname').touched
+      ?'error-input' : 'input-item'}}"
+             autocomplete="true" placeholder="last name" formControlName="lastname">
+      <span
+        *ngIf="formG?.get('lastname').invalid  && formG?.get('lastname').touched  && formG?.get('lastname').dirty">
+        <am-error-messages *ngIf="formG?.get('lastname').errors?.required" errorMessages="Поле не може бути пусти!">
+      </am-error-messages>
+      <am-error-messages *ngIf="formG.get('lastname').errors?.minlength" errorMessages="Імя закоротке!">
+      </am-error-messages>
+      <am-error-messages *ngIf="formG.get('lastname').errors?.maxlength" errorMessages="Імя дуже велике!">
+      </am-error-messages>
+  </span>
+
+      <button  class="{{formG.invalid? 'button-disable' :'button-submit' }}"
+              [class.button-disable]="formG.invalid" type="submit" [disabled]="formG.invalid" >next
+      </button>
+    </form>
+  </div>
+</div>

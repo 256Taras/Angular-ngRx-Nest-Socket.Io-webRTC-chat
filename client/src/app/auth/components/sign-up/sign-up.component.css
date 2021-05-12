@@ -1,7 +1,8 @@
+
 .container {
   max-width: 1170px;
   margin: 0 auto;
-  height: 100vh;
+
 }
 
 .input-item {
@@ -13,16 +14,30 @@
   border-radius: 6px;
 }
 
-.input-item:focus::placeholder {
+.input-item::placeholder {
   outline-color: #0b57f1;
   font-size: 15px;
   transition: all 0.2s ease-out;
   color: #3f7af1;
 }
 
-.input-item:focus {
-  outline-color: #0b57f1;
 
+
+.input-item:focus{
+  outline-color: #0b57f1;
+}
+.error-input {
+  width: 95%;
+  padding: 15px 20px;
+  margin: 20px 10px;
+  display: block;
+  border: 2px solid #ff0000;
+  border-radius: 6px;
+}
+
+
+.error-input:focus{
+  outline-color: #b41313;
 }
 
 .bg-color {
@@ -30,6 +45,7 @@
   background: #faf7f7;
   border-radius: 10px;
   width: 45%;
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
 }
 
 .wrapper {
@@ -59,13 +75,7 @@
 
 .button-submit:hover {
   background: #245fd4;
-  color: #fff;
-  border-radius: 10px;
-  margin: 4px 5px 5px 12px;
-  padding: 11px 25px;
-  font-weight: bold;
-  font-size: 16px;
-  transition: all 0.2s ease-out;
+
 }
 
 .link-text {
@@ -86,3 +96,17 @@
   font-weight: bolder;
 }
 
+
+.button-disable{
+  background: #cccccc;
+  border: 0px;
+  border-radius: 10px;
+  margin: 5px 5px 5px 12px;
+  padding: 10px 25px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+}
+.button-disable:hover{
+  background: #cccccc;
+}

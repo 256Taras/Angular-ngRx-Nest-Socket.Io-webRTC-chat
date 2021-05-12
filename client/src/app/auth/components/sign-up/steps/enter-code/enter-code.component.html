@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="wrapper">
+    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
+      <p class="title">Step Code</p>
+      <input type="number" min="0"    class="input-item" autocomplete="true"   placeholder="x-x-x-x" formControlName="code"  maxlength="4">
+    <pre>{{
+      formG.valid | json
+      }}</pre>
+
+      <button prevStep class="button-submit" >prev</button>
+      <button
+              class="{{formG.invalid? 'button-disable' :'button-submit' }}"
+              [class.button-disable]="formG.invalid" type="submit" [disabled]="formG.invalid">next</button>
+    </form>
+
+
+  </div>
+</div>

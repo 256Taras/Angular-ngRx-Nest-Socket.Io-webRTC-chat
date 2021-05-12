@@ -1,0 +1,22 @@
+.error-message{
+  width: 95.4%;
+  background: #e3364e;
+  color: #fff;
+  margin-left: 10px;
+  padding: 3px 0;
+  border-radius: 0px 0px 10px 10px;
+  opacity:0; /*Элемент полностью прозрачный (невидимый)*/
+  transition: 1s; /*Скорость перехода состояния элемента*/
+  animation: show 2s 1; /* Указываем название анимации, её время и количество повторов*/
+  animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
+  animation-delay: 0.1s; /* Задержка перед началом */
+}
+@keyframes show{
+  0%{
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
