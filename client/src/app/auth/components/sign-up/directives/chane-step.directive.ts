@@ -31,9 +31,7 @@ export class ChaneStepDirective implements OnInit {
 
 
   private initMethod() {
-    if ('next' in this) {
-      this.store.dispatch(NextStepAction());
-    }
+
     if ('prev' in this) {
       this.store.dispatch(PrevStepAction());
     }

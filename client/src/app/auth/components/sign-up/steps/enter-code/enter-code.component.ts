@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
 import {isSubmittingSelector} from "../../../../store/selectors/sign-up.selector";
-import {NextStepAction, PrevStepAction} from "../../../../store/action-creators/step.action";
+import {ClearStepStatus, NextStepAction, PrevStepAction} from "../../../../store/action-creators/step.action";
 import {UserInterface} from "../../../../../shared/interfaces/user.interface";
 import {AddUserCodeAction} from "../../../../store/action-creators/sign-up.action";
 
@@ -46,7 +46,6 @@ export class EnterCodeComponent implements OnInit {
       console.log({code: this.formG.value.code})
       this.store.dispatch(AddUserCodeAction(conde));
       this.store.dispatch(NextStepAction());
-
     }
     console.log(this.formG.value);
     console.log(this.formG.valid);
