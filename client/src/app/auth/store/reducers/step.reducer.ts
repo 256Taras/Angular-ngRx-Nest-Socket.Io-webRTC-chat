@@ -1,6 +1,8 @@
 import {Action, createReducer, on} from '@ngrx/store';
 
-import {ClearStepStatus, NextStepAction, PrevStepAction} from "../action-creators/step.action";
+import {ClearStepStatus, NextStepAction, PrevStepAction} from "../action/step.action";
+import {BackEndErrorAction} from "../action/sign-up.action";
+import {SingUpStateInterface} from "./sing-up.reducer";
 
 export interface StepStateInterface {
   prev: boolean;
@@ -40,6 +42,14 @@ const steps = createReducer(
       ...state,
       prev:false,
       next: false,
+    })
+  ),
+  on(
+    BackEndErrorAction,
+    (state,action ): StepStateInterface => ({
+      ...state,
+      prev:true
+
     })
   )
 )

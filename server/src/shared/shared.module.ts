@@ -1,5 +1,6 @@
 import {Module} from '@nestjs/common';
 import {JwtModule} from "@nestjs/jwt";
+import {FileModule} from "../file/file.module";
 
 @Module({
     imports: [
@@ -7,9 +8,11 @@ import {JwtModule} from "@nestjs/jwt";
             secret: 'secret',
             signOptions: {expiresIn: '1d'},
         }),
+        FileModule
     ],
     exports: [
-        JwtModule
+        JwtModule,
+        FileModule
     ]
 })
 export class SharedModule {

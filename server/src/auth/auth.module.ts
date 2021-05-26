@@ -8,12 +8,13 @@ import {UserModule} from "../user/user.module";
 import {SharedModule} from "../shared/shared.module";
 import Candidate from "./entities/candidate.entity";
 import {Twilio} from "twilio";
+import {FileModule} from "../file/file.module";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([Candidate]),
         UserModule,
-        SharedModule
+        SharedModule,
     ],
     controllers: [AuthController],
     providers:
@@ -28,6 +29,7 @@ import {Twilio} from "twilio";
                     return new Twilio(accountSid, authToken);
                 }
             },
+
         ],
     exports: []
 })

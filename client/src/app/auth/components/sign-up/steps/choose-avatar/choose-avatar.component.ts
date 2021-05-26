@@ -1,9 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
-import {AddUserInitialsAction} from "../../../../store/action-creators/sign-up.action";
-import {isSubmittingSelector} from "../../../../store/selectors/sign-up.selector";
+import {
+  AddUserAvatarAction,
+  AddUserInitialsAction,
+  SignUpAction
+} from "../../../../store/action/sign-up.action";
+import {isSubmittingSelector, UserInitialSelector, UserSelector} from "../../../../store/selectors/sign-up.selector";
+import {iif, Subscription} from "rxjs";
+import {map} from "rxjs/operators";
+import {UserInterface} from "../../../../../shared/interfaces/user.interface";
 
 
 @Component({
@@ -11,12 +18,16 @@ import {isSubmittingSelector} from "../../../../store/selectors/sign-up.selector
   templateUrl: './choose-avatar.component.html',
   styleUrls: ['./choose-avatar.component.css']
 })
-export class ChooseAvatarComponent implements OnInit {
+export class ChooseAvatarComponent implements OnInit, OnDestroy {
 
   public formG: FormGroup;
   public isSubmitting$: Observable<boolean>;
+  public userInitial: Observable<string>;
   public imgPath: any | null | string;
   public avatar: string | ArrayBuffer;
+  private candidateSubscription: Subscription;
+  private candidate: UserInterface;
+
 
   constructor(private formBuilder: FormBuilder, private store: Store) {
   }
@@ -28,37 +39,17 @@ export class ChooseAvatarComponent implements OnInit {
 
   public initForm(): void {
     this.formG = this.formBuilder.group({
-      userAvatar: ['',],
+      userAvatar: [''],
     })
   }
 
-  public onSubmit(): void {
-
-    if (this.formG.valid) {
-      this.store.dispatch(AddUserInitialsAction(this.formG.value));
-
-    }
-    console.log(this.formG.value);
-    console.log(this.formG.valid);
-  }
-
-  private initValues(): void {
-    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
-
-  }
 
   public openUploadAvatar(avatar: HTMLElement): void {
     avatar.click()
   }
 
-  chooseColor(color: HTMLInputElement) {
 
-    color.click()
-
-  }
-
-
-  uploadAvatar(target) {
+  public uploadAvatar(target) {
 
     if (target.files.length === 0)
       return;
@@ -67,7 +58,32 @@ export class ChooseAvatarComponent implements OnInit {
     reader.onload = (_event: ProgressEvent<FileReader>) => {
       this.avatar = reader.result;
     }
+    this.store.dispatch(AddUserAvatarAction(this.formG.value));
+    console.log(this.formG.value)
+  }
+
+  private initValues(): void {
+    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
+    this.candidateSubscription = this.store.pipe(select(UserSelector)).subscribe((v) => this.candidate = v)
+    this.userInitial = this.store.pipe(select(UserInitialSelector)).pipe(
+      map(({firstname, lastname}) => {
+        if (firstname && lastname) {
+          return firstname.charAt(0) + lastname.charAt(0)
+        }
+        return ''
+      })
+    )
+  }
+
+  public onSubmit(): void {
+ //   console.log(this.formG.value)
+
+  //  console.log({candidate: this.candidate})
+      this.store.dispatch(SignUpAction({candidate: this.candidate}));
   }
 
 
+  public ngOnDestroy(): void {
+    this.candidateSubscription.unsubscribe()
+  }
 }

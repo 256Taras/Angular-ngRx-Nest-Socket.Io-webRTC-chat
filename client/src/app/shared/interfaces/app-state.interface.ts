@@ -1,9 +1,10 @@
-import {SingUpStateInterface} from "../../auth/store/reducers/sign-in.reducer";
+
 import {StepStateInterface} from "../../auth/store/reducers/step.reducer";
+import {SingUpStateInterface} from "../../auth/store/reducers/sing-up.reducer";
 
 export interface AppStateInterface {
-  signUp: SingUpStateInterface,
-  signIn: any,
+  singUp: SingUpStateInterface,
+  singIn: any,
   step:StepStateInterface,
 }
 

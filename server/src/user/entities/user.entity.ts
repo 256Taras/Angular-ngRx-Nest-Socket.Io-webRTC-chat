@@ -6,7 +6,7 @@ class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({nullable:true})
     nikname: string;
 
     @Column()
@@ -15,11 +15,11 @@ class User {
     @Column()
     lastname: string
 
-    @Column()
+    @Column({nullable:true})
     avatar: string;
 
     @Column()
-    phone: number;
+    phone: string;
 }
 
 export default User

@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, MaxLengthValidator, Validators} from "@angular/forms";
 import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
-import {AddUserInitialsAction, SignUpAction} from "../../../../store/action-creators/sign-up.action";
+import {AddUserInitialsAction, SignUpAction} from "../../../../store/action/sign-up.action";
 import {isSubmittingSelector} from "../../../../store/selectors/sign-up.selector";
 import {UserInterface} from "../../../../../shared/interfaces/user.interface";
-import {NextStepAction} from "../../../../store/action-creators/step.action";
+import {ClearStepStatus, NextStepAction, PrevStepAction} from "../../../../store/action/step.action";
 
 @Component({
   selector: 'am-enter-name',
@@ -17,7 +17,7 @@ export class EnterNameComponent implements OnInit {
 
   public formG: FormGroup;
   public isSubmitting$: Observable<boolean>;
-  public isFormValid: unknown;
+
 
   constructor(private formBuilder: FormBuilder, private store: Store) {
   }
@@ -29,29 +29,40 @@ export class EnterNameComponent implements OnInit {
 
   public initForm() {
     this.formG = new FormGroup({
-      firstname: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]),
+      nikname: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]),
+      firstname: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]),
       lastname: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)])
     });
 
   }
 
   public onSubmit(): void {
-    const user: UserInterface = {
-      firstname: this.formG.value.firstname,
-      lastname: this.formG.value.lastname,
-    }
 
-    if (this.formG.valid) {
 
-      this.store.dispatch(AddUserInitialsAction({user}));
-      this.store.dispatch(NextStepAction());
-    }
-    console.log(this.formG.value);
-    console.log(this.formG.valid);
+
   }
 
   private initValues() {
     this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
   }
 
+ private backToPhoneStep() {
+    this.store.dispatch(PrevStepAction());
+  }
+
+  nextStep() {
+    const user: UserInterface = {
+      nikname: this.formG.value.nikname,
+      firstname: this.formG.value.firstname,
+      lastname: this.formG.value.lastname,
+    }
+    if (this.formG.valid && user.lastname && user.lastname && user.nikname) {
+
+      this.store.dispatch(AddUserInitialsAction({user}));
+      this.store.dispatch(NextStepAction());
+      this.store.dispatch(ClearStepStatus());
+    }
+
+
+  }
 }

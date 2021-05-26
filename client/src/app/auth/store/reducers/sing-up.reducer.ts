@@ -1,27 +1,34 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {
-  AddUserCodeAction,
+  AddUserAvatarAction,
   AddUserInitialsAction,
-  AddUserPhoneAction,
-  SignUpAction
-} from "../action-creators/sign-up.action";
+  AddUserPhoneAction, BackEndErrorAction, CheckUserCodeAction,
+  SignUpAction, SmsEndowedAction, SubmittingAction, UserCodeSuccessfulConfirm
+} from "../action/sign-up.action";
 import {UserInterface} from "../../../shared/interfaces/user.interface";
 
 
-export interface ISingUpState {
+export interface SingUpStateInterface {
   user: UserInterface;
   isSubmitting: boolean;
+  backendErrors: string | null;
+  smsEndowed: boolean;
+  codeSuccessfulConfirm: boolean;
 }
 
-const initialState: ISingUpState = {
+const initialState: SingUpStateInterface = {
   user: {
+    nikname: null,
     firstname: null,
     lastname: null,
     phone: null,
-    code: null ,
     avatar: null,
   },
-  isSubmitting: false
+  codeSuccessfulConfirm: false,
+  isSubmitting: false,
+  backendErrors: null,
+  smsEndowed: false
+
 }
 
 
@@ -29,50 +36,84 @@ const signUp = createReducer(
   initialState,
   on(
     SignUpAction,
-    (state): ISingUpState => ({
+    (state): SingUpStateInterface => ({
       ...state,
       isSubmitting: true
     })
   ),
   on(
     AddUserInitialsAction,
-    (state, {user}): ISingUpState => ({
+    (state, {user}): SingUpStateInterface => ({
       ...state,
       user: {
         ...state.user,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        // phone: state.user.phone,
-        // code: state.user.code,
-        // avatar: state.user.avatar,
-        // avatarColor: state.user.avatarColor,
+        nikname: user?.nikname ? user.nikname : '',
+        firstname: user?.firstname ? user.firstname : '',
+        lastname: user?.lastname ? user.lastname : '',
+
       }
     })
   ),
   on(
     AddUserPhoneAction,
-    (state, {phone}): ISingUpState => ({
+    (state, {phone}): SingUpStateInterface => ({
       ...state,
+      isSubmitting: true,
+      backendErrors: '',
       user: {
         ...state.user,
-         phone
+        phone
       }
     })
   ),
   on(
-    AddUserCodeAction,
-    (state, {code}): ISingUpState => ({
+    SmsEndowedAction,
+    (state, {smsEndowed}): SingUpStateInterface => ({
       ...state,
-      user: {
-        ...state.user,
-         code,
+      smsEndowed,
+      isSubmitting: false,
+    })
+  ),
+  on(
+    UserCodeSuccessfulConfirm,
+    (state): SingUpStateInterface => ({
+      ...state,
+      codeSuccessfulConfirm: true,
+      isSubmitting: false,
+    })
+  ),
+  on(
+    AddUserAvatarAction,
+    (state, {userAvatar}): SingUpStateInterface => (
+      {
+        ...state,
+        user: {
+          ...state.user,
+          avatar: userAvatar
+        }
       }
+    )
+  ),
+  on(
+    SubmittingAction,
+    (state): SingUpStateInterface => ({
+      ...state,
+      isSubmitting: true
+    })
+  ),
+  on(
+    BackEndErrorAction,
+    (state, {backendErrors}): SingUpStateInterface => ({
+      ...state,
+      ...state.user,
+      isSubmitting: false,
+      backendErrors
     })
   )
 )
 
 
-export function signUpReducer(state: ISingUpState, action: Action) {
+export function signUpReducer(state: SingUpStateInterface, action: Action) {
   return signUp(state, action);
 }
 

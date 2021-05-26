@@ -2,10 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
-import {isSubmittingSelector} from "../../../../store/selectors/sign-up.selector";
-import {ClearStepStatus, NextStepAction, PrevStepAction} from "../../../../store/action-creators/step.action";
+import {isSubmittingSelector, UserPhoneSelector} from "../../../../store/selectors/sign-up.selector";
+import {ClearStepStatus, NextStepAction, PrevStepAction} from "../../../../store/action/step.action";
 import {UserInterface} from "../../../../../shared/interfaces/user.interface";
-import {AddUserCodeAction} from "../../../../store/action-creators/sign-up.action";
+import {CheckUserCodeAction, SubmittingAction} from "../../../../store/action/sign-up.action";
+import {map} from "rxjs/operators";
+
 
 @Component({
   selector: 'am-enter-code',
@@ -16,6 +18,7 @@ export class EnterCodeComponent implements OnInit {
 
   public formG: FormGroup;
   public isSubmitting$: Observable<boolean>;
+  private userPhone: string;
 
   constructor(private formBuilder: FormBuilder, private store: Store) {
   }
@@ -40,20 +43,23 @@ export class EnterCodeComponent implements OnInit {
 
 
   public onSubmit(): void {
+    const conde = {code: this.formG.value.code,phone: this.userPhone}
+    if (this.formG.valid && this.userPhone) {
+      this.store.dispatch(CheckUserCodeAction(conde));
+      this.store.dispatch(SubmittingAction(conde))
 
-    const conde = {code: this.formG.value.code}
-    if (this.formG.valid) {
-      console.log({code: this.formG.value.code})
-      this.store.dispatch(AddUserCodeAction(conde));
-      this.store.dispatch(NextStepAction());
     }
-    console.log(this.formG.value);
-    console.log(this.formG.valid);
   }
 
   private initValues() {
     this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
 
+    this.store.pipe(select(UserPhoneSelector)).subscribe(
+      (v)=>{
+        this.userPhone = v
+      }
+
+    )
   }
 
 

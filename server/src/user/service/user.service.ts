@@ -5,30 +5,44 @@ import User from "../entities/user.entity";
 import {Repository} from "typeorm";
 import {from, Observable, throwError} from 'rxjs';
 import {catchError, map, switchMap} from "rxjs/operators";
+import {FileService} from "../../file/service/file.service";
 
-;
 
 @Injectable()
 export class UserService {
 
-    constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
-    }
+    constructor(
+        @InjectRepository(User) private readonly userRepository: Repository<User>,
+
+    ) {}
 
     public create(candidate: UserInterface): Observable<User> {
+
         return this.findByNikname(candidate.nikname).pipe(
             switchMap((userExist) => {
-                console.log('ff', candidate)
                 if (userExist) {
                     throw new HttpException(`user with nik name:${candidate.nikname} already exist`, 409)
                 }
 
-                return from(this.userRepository.save(candidate))
+                return from(this.userRepository.save(candidate)).pipe(
+                    map((user)=>{
+                        console.log(user)
+                        return user
+                    })
+                )
             }), catchError(err => throwError(err))
         )
     }
 
     public findByNikname(nikname: string): Observable<User> {
         return from(this.userRepository.findOne({nikname})).pipe(
+            map((user) => {
+                return user
+            })
+        )
+    }
+    public findByPhone(phone: string): Observable<User> {
+        return from(this.userRepository.findOne({phone})).pipe(
             map((user) => {
                 return user
             })
@@ -47,6 +61,10 @@ export class UserService {
 
     public update(id: number, updateUserDto: UserInterface) {
         return `This action updates a #${id} user`;
+    }
+
+    public updateAvatar(id: number, updateUserDto: UserInterface) {
+        return ''
     }
 
     public remove(id: number) {

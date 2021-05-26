@@ -10,6 +10,7 @@ import Candidate from "../entities/candidate.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import Twilio from "twilio/lib/rest/Twilio";
 import {CandidateInterface} from "../entities/candidate.interface.";
+import {FileService} from 'src/file/service/file.service';
 
 
 @Injectable()
@@ -17,31 +18,53 @@ export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
         private readonly userService: UserService,
+        private readonly fileService: FileService,
         @Inject("SMS") private readonly twilioService: Twilio,
         @InjectRepository(Candidate) private readonly candidateRepository: Repository<Candidate>
     ) {
     }
 
-    public singUp(candidate: UserInterface): Observable<{ jwt: string; user: User; }> {
-        return this.userService.create(candidate).pipe(
-            switchMap((user: User) => {
-                return this.generateJWT(user).pipe(
-                    map((jwt: string) => {
-                        return {jwt, user}
+    public singUp(candidate: UserInterface, photo: any): Observable<{ jwt: string; user: User; }> | any {
+        const registerUser = from(this.fileService.uploadUserAvatar(photo, candidate.phone)).pipe(
+            switchMap((avatar) => {
+                return this.userService.create({...candidate, ...avatar}).pipe(
+                    switchMap((user: User) => {
+                        return this.generateJWT(user).pipe(
+                            map((jwt: string) => {
+                                return {jwt, user}
+                            })
+                        )
                     })
                 )
             })
         )
+
+
+        return this._findByCandidatePhone(candidate.phone).pipe(
+            switchMap((candidate: Candidate | undefined) => {
+                if (!candidate || !candidate.isApproved) {
+                    return this._error('Номер телефону не підтверджено!', 409)
+                }
+                return registerUser
+            })
+        )
+
+
     }
 
+
     public sendSMStoPhone2(phone: string): Observable<any> {
-        const code = this._generateCode();
-        return this._findByPhone(phone).pipe(
-            concatMap((candidate) => {
-                if (!candidate) {
+        // const code = this._generateCode();
+        const code = 1111;
+
+        return this._findByUserPhone(phone).pipe(
+            concatMap((user) => {
+                if (!user) {
                     return this._createCandidate(phone, code)
                 }
-                return this._updateCandidate(candidate.id, phone, code)
+                if (user) {
+                    return this._error('Телефон уже зареєстрований', 409)
+                }
             }),
             switchMap(({phone, code}: Candidate) => {
                 return this._twilioParams(phone, code)
@@ -52,35 +75,60 @@ export class AuthService {
     }
 
 
-    public chekCode(phone: string, codeForChek: number) {
+    public chekCode(phone: string, codeForChek: number): Observable<{ confirmed: boolean }> {
         const eMessage = `Невірний код!`
-        return this._findByPhone(phone).pipe(
-            switchMap(({code, phone}:CandidateInterface) => {
-                if ( code === codeForChek) {
+        return this._findByCandidatePhone(phone).pipe(
+            concatMap(({code, phone, id}: Candidate) => {
+                if (code !== codeForChek) {
+                    return this._error(eMessage, 400)
+                }
+                return from(this.candidateRepository.update(id, {isApproved: true})).pipe(
+                    map((value) => {
+                        return {confirmed: true}
+                    })
+                )
+
+            })
+        )
+    }
+
+
+    /*
+
+         const eMessage = `Невірний код!`
+        return this._findByCandidatePhone(phone).pipe(
+            switchMap(({code, phone}: CandidateInterface) => {
+                if (code === codeForChek) {
                     return of({confirmed: true})
                 }
                 return this._error(eMessage, 400)
             }),
             catchError(err => throwError(err))
         )
-    }
+
+     */
+
 
     //------------------------------------------------------
 
     private _twilioParams(phone: string, code: number | unknown) {
         const twilioNumber = process.env.TWILIO_NUMBER
-        return from(this.twilioService.messages.create({
-                from: twilioNumber,
-                to: phone,
-                body: `Ваш код підтвердження ${code}`,
-            })
-        ).pipe(
-            map((res) => {
-                if (!res.errorCode && !res.errorMessage) {
-                    return {smsEndowed: true}
-                }
-            })
-        )
+        /*  return from(this.twilioService.messages.create({
+                  from: twilioNumber,
+                  to: phone,
+                  body: `Ваш код підтвердження ${code}`,
+              })
+          ).pipe(
+              map((res) => {
+                  if (!res.errorCode && !res.errorMessage) {
+                      return {smsEndowed: true}
+                  }
+              })
+          )
+
+         */
+
+        return of({smsEndowed: true})
     }
 
     private _generateCode(): number {
@@ -91,12 +139,15 @@ export class AuthService {
 
     private _updateCandidate(id: number, phone: string, code: number): Observable<Candidate> {
         return from(this.candidateRepository.update(id, {phone, code})).pipe(
-            switchMap(() => this._findByPhone(phone))
+            switchMap(() => this._findByCandidatePhone(phone))
         )
     }
 
-    private _findByPhone(phone: string): Observable<Candidate | undefined> {
+    private _findByCandidatePhone(phone: string): Observable<Candidate | undefined> {
         return from(this.candidateRepository.findOne({phone}))
+    }
+    private _findByUserPhone(phone: string): Observable< User | undefined> {
+        return this.userService.findByPhone(phone)
     }
 
     private _createCandidate(phone: string, code: number): Observable<Candidate> {

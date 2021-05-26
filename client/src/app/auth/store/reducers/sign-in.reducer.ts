@@ -1,16 +1,16 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import { SignInAction } from '../action-creators/sign-in.action';
-import {AddUserInitialsAction} from "../action-creators/sign-up.action";
+import { SignInAction } from '../action/sign-in.action';
+import {AddUserInitialsAction} from "../action/sign-up.action";
 
 
 
-export interface SingUpStateInterface {
+export interface SingInStateInterface {
   firstname: null | string;
   lastname: null | string;
   isSubmitting: boolean;
 }
 
-const initialState: SingUpStateInterface = {
+const initialState: SingInStateInterface = {
   firstname: null,
   lastname: null,
   isSubmitting: false
@@ -21,7 +21,7 @@ const signIn = createReducer(
   initialState,
   on(
     SignInAction,
-    (state): SingUpStateInterface => ({
+    (state): SingInStateInterface => ({
       ...state,
       isSubmitting: true
     })
@@ -29,7 +29,7 @@ const signIn = createReducer(
 )
 
 
-export function signInReducer(state: SingUpStateInterface, action: Action) {
+export function signInReducer(state: SingInStateInterface, action: Action) {
   return signIn(state, action);
 }
 

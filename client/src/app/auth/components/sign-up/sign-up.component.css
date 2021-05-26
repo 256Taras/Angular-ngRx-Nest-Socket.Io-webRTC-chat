@@ -110,3 +110,15 @@
 .button-disable:hover{
   background: #cccccc;
 }
+
+.loader-container{
+  margin: 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  height: 300px;
+}
+.loader{
+width: 100%;
+}

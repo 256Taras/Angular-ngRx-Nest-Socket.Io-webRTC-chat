@@ -15,13 +15,12 @@ import { EnterPhoneComponent } from './components/sign-up/steps/enter-phone/ente
 import { EnterNameComponent } from './components/sign-up/steps/enter-name/enter-name.component';
 import { ChooseAvatarComponent } from './components/sign-up/steps/choose-avatar/choose-avatar.component';
 import { EnterCodeComponent } from './components/sign-up/steps/enter-code/enter-code.component';
-import { ChaneStepDirective } from './components/sign-up/directives/chane-step.directive';
 import {stepReducer} from "./store/reducers/step.reducer";
 import {StepContainerComponent} from "./components/sign-up/step-container/step-container.component";
 import {ErrorMessagesModule} from "../shared/modules/error-messages/error-messages.module";
-
-
-
+import {AuthService} from "./services/auth.service";
+import {StorageService} from "./services/storage.service";
+import {userReducer} from "./store/reducers/user.reducer";
 
 
 
@@ -47,9 +46,6 @@ const routes: Routes = [
     ChooseAvatarComponent,
     StepContainerComponent,
     EnterCodeComponent,
-    ChaneStepDirective,
-
-
   ],
     imports: [
         CommonModule,
@@ -58,11 +54,16 @@ const routes: Routes = [
         StoreModule.forFeature('singIn', signInReducer),
         StoreModule.forFeature('singUp', signUpReducer),
         StoreModule.forFeature('step', stepReducer),
+        StoreModule.forFeature('authUser', userReducer),
         EffectsModule.forFeature([SingUpEffect]),
         ErrorMessagesModule,
         FormsModule
 
-    ]
+    ],
+  providers:[
+    AuthService,
+    StorageService
+  ]
 })
 export class AuthModule {
 }

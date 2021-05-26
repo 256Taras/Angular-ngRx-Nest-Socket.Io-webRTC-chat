@@ -2,7 +2,7 @@ import {AfterContentInit, Component, ContentChildren, OnInit, QueryList} from '@
 import {select, Store} from "@ngrx/store";
 
 import {NextStepSelector, PrevStepSelector} from "../../../store/selectors/step.selector";
-import {ClearStepStatus} from 'src/app/auth/store/action-creators/step.action';
+import {ClearStepStatus} from 'src/app/auth/store/action/step.action';
 import {Subscription} from 'rxjs';
 import {StepContainerComponent} from "../step-container/step-container.component";
 
@@ -31,8 +31,10 @@ export class StepComponent implements OnInit, AfterContentInit {
   public ngOnInit(): void {
 
     this.isNext$ = this.store.pipe(select(NextStepSelector)).subscribe((next:boolean) => {
+      console.log('subscribe')
    if (next){
      this.next()
+
      this.store.dispatch(ClearStepStatus())
    }
 

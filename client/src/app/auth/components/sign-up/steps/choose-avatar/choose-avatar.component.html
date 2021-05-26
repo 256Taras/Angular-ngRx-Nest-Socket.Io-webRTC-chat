@@ -1,6 +1,6 @@
 <div class="container">
   <div class="wrapper">
-    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
+    <form class="bg-color" [formGroup]="formG">
       <p class="title">Choose user avatar or color </p>
 
       <div class="avatar-container">
@@ -8,7 +8,7 @@
        <span *ngIf="!avatar; else showAvatarImg">
           <div class="user-avatar" (click)="openUploadAvatar(AVATAR)" >
         <span class="user-initials">
-        ti
+        {{userInitial | async}}
         </span>
         </div>
        </span>
@@ -24,7 +24,7 @@
 
       <div class="button-container">
         <button prevStep class="button-submit">prev</button>
-        <button  class="button-submit" type="submit">sing up</button>
+        <button  class="button-submit" (click)="onSubmit()">sing up</button>
       </div>
     </form>
   </div>
