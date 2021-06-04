@@ -6,6 +6,8 @@ import {
   SignUpAction, SmsEndowedAction, SubmittingAction, UserCodeSuccessfulConfirm
 } from "../action/sign-up.action";
 import {UserInterface} from "../../../shared/interfaces/user.interface";
+import { SmsConfirmed } from '../action/sign-in.action';
+import { SingInStateInterface } from './sign-in.reducer';
 
 
 export interface SingUpStateInterface {
@@ -18,6 +20,7 @@ export interface SingUpStateInterface {
 
 const initialState: SingUpStateInterface = {
   user: {
+    id:null,
     nikname: null,
     firstname: null,
     lastname: null,
@@ -34,12 +37,30 @@ const initialState: SingUpStateInterface = {
 
 const signUp = createReducer(
   initialState,
+
+
   on(
     SignUpAction,
     (state): SingUpStateInterface => ({
       ...state,
       isSubmitting: true
     })
+  ),
+  on(
+    SmsConfirmed,
+    (state,{user}): SingUpStateInterface => ({
+      ...state,
+      user:{
+        ...state.user,
+        id:user.id,
+        nikname:user.nikname,
+        lastname:user.lastname,
+        firstname:user.firstname,
+        avatar:user.avatar,
+        phone:user.phone,
+        code:user.code,
+      }
+    }),
   ),
   on(
     AddUserInitialsAction,

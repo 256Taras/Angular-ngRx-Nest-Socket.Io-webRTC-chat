@@ -1,15 +1,17 @@
 import {HttpException, Inject, Injectable} from '@nestjs/common';
-import {UserInterface} from "../../shared/interface/user.interface";
-import {from, iif, Observable, of, pipe, throwError} from "rxjs";
-import {JwtService} from "@nestjs/jwt";
-import {UserService} from "../../user/service/user.service";
-import {catchError, concatMap, map, switchMap, tap} from "rxjs/operators";
-import User from "../../user/entities/user.entity";
-import {Repository} from "typeorm";
-import Candidate from "../entities/candidate.entity";
+import {from, Observable, of, throwError} from "rxjs";
+import {catchError, concatMap, map, switchMap} from "rxjs/operators";
 import {InjectRepository} from "@nestjs/typeorm";
 import Twilio from "twilio/lib/rest/Twilio";
-import {CandidateInterface} from "../entities/candidate.interface.";
+import {JwtService} from "@nestjs/jwt";
+import {Repository} from "typeorm";
+
+import {UserInterface} from "../../shared/interface/user.interface";
+import {UserService} from "../../user/service/user.service";
+import User from "../../user/entities/user.entity";
+import Candidate from "../entities/candidate.entity";
+
+
 import {FileService} from 'src/file/service/file.service';
 
 
@@ -24,7 +26,7 @@ export class AuthService {
     ) {
     }
 
-    public singUp(candidate: UserInterface, photo: any): Observable<{ jwt: string; user: User; }> | any {
+    public singUp(candidate: UserInterface, photo: any): Observable<{ jwt: string; user: User; }> {
         const registerUser = from(this.fileService.uploadUserAvatar(photo, candidate.phone)).pipe(
             switchMap((avatar) => {
                 return this.userService.create({...candidate, ...avatar}).pipe(
@@ -76,11 +78,11 @@ export class AuthService {
 
 
     public chekCode(phone: string, codeForChek: number): Observable<{ confirmed: boolean }> {
-        const eMessage = `Невірний код!`
+
         return this._findByCandidatePhone(phone).pipe(
             concatMap(({code, phone, id}: Candidate) => {
                 if (code !== codeForChek) {
-                    return this._error(eMessage, 400)
+                    return this._error(this.eMessage, 400)
                 }
                 return from(this.candidateRepository.update(id, {isApproved: true})).pipe(
                     map((value) => {
@@ -89,6 +91,44 @@ export class AuthService {
                 )
 
             })
+        )
+    }
+
+    public chekUserCode(code: number, phone: string): Observable<{ jwt: string; user: User; }> {
+        return this._findByUserPhone(phone).pipe(
+            switchMap((user: User) => {
+                if (user.code !== code) {
+                    return this._error(this.eMessage, 400)
+                }
+                return this.generateJWT(user).pipe(
+                    map((jwt: string) => {
+                        return {jwt, user}
+                    })
+                )
+            })
+        )
+    }
+
+    public sendSmsToUserPhone(phone: string): Observable<{ smsEndowed: boolean }> {
+        // const code = this._generateCode();
+        const code = 1111;
+        return this._findByUserPhone(phone).pipe(
+            concatMap((user) => {
+                if (!user) {
+                    return this._error('Цей телефон не зареєстрований!', 400);
+                }
+                if (user) {
+                    return this._twilioParams(phone, code).pipe(
+                        map(({smsEndowed}) => {
+                          if (smsEndowed){
+                              this.userService.update(user.id, {code});
+                            return {smsEndowed:true};
+                          }
+                        })
+                    )
+                }
+            }),
+            catchError(err => throwError(err))
         )
     }
 
@@ -111,6 +151,8 @@ export class AuthService {
 
     //------------------------------------------------------
 
+    private eMessage: string = `Невірний код!`;
+
     private _twilioParams(phone: string, code: number | unknown) {
         const twilioNumber = process.env.TWILIO_NUMBER
         /*  return from(this.twilioService.messages.create({
@@ -128,7 +170,7 @@ export class AuthService {
 
          */
 
-        return of({smsEndowed: true})
+        return of({smsEndowed: true});
     }
 
     private _generateCode(): number {
@@ -144,14 +186,15 @@ export class AuthService {
     }
 
     private _findByCandidatePhone(phone: string): Observable<Candidate | undefined> {
-        return from(this.candidateRepository.findOne({phone}))
+        return from(this.candidateRepository.findOne({phone}));
     }
-    private _findByUserPhone(phone: string): Observable< User | undefined> {
-        return this.userService.findByPhone(phone)
+
+    private _findByUserPhone(phone: string): Observable<User | undefined> {
+        return this.userService.findByPhone(phone);
     }
 
     private _createCandidate(phone: string, code: number): Observable<Candidate> {
-        return from(this.candidateRepository.save({phone, code}))
+        return from(this.candidateRepository.save({phone, code}));
     }
 
     private generateJWT(user: UserInterface): Observable<string> {
@@ -159,7 +202,8 @@ export class AuthService {
     }
 
     private _error(errorMessage: string, statusCode: number) {
-        return throwError(new HttpException(errorMessage, statusCode))
+        return throwError(new HttpException(errorMessage, statusCode));
     }
+
 
 }

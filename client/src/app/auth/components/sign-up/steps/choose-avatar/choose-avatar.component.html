@@ -5,13 +5,13 @@
 
       <div class="avatar-container">
 
-       <span *ngIf="!avatar; else showAvatarImg">
+       <span *ngIf="!avatar; else showAvatarImg" class='bg'>
           <div class="user-avatar" (click)="openUploadAvatar(AVATAR)" >
         <span class="user-initials">
         {{userInitial | async}}
         </span>
         </div>
-       </span>
+       </span >
 
         <ng-template #showAvatarImg class="user-avatar" >
           <img src="{{avatar}}" alt="your avatar" class="user-selected-avatar" (click)="openUploadAvatar(AVATAR)">
@@ -23,7 +23,7 @@
       <input #AVATAR type="file" accept="image/*" class="input-hide" formControlName="userAvatar" (change)="uploadAvatar($event.target)">
 
       <div class="button-container">
-        <button prevStep class="button-submit">prev</button>
+        <button (click)="backToPhoneStep()" class="button-submit">prev</button>
         <button  class="button-submit" (click)="onSubmit()">sing up</button>
       </div>
     </form>

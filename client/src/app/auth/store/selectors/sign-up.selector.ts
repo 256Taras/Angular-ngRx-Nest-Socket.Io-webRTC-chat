@@ -4,23 +4,6 @@ import {SingUpStateInterface} from "../reducers/sing-up.reducer";
 import {StepStateInterface} from "../reducers/step.reducer";
 
 
-
-
-// export const  SignUpFeatureSelector = createFeatureSelector<AppStateInterface,SingUpStateInterface>('signUp')
-//
-//
-//
-// export  const isSubmittingSelector = createSelector(
-//   SignUpFeatureSelector,
-//   (authState:SingUpStateInterface)=> authState.isSubmitting
-// )
-// export  const SmsEndowedSelector = createSelector(
-//   SignUpFeatureSelector,
-//   (authState:SingUpStateInterface)=> authState.smsEndowed
-// )
-
-
-
 export const SignUpFeatureSelector = createFeatureSelector<AppStateInterface, SingUpStateInterface>('singUp')
 
 

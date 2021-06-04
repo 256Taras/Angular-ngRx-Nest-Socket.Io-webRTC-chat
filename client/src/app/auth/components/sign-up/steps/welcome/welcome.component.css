@@ -1,0 +1,9 @@
+.photo-size{
+  max-width: 50px;
+  background: inherit;
+}
+.img-wrapper{
+  width: 100%;
+  text-align: center;
+  background: inherit;
+}

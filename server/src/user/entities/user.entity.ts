@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 
@@ -20,6 +21,9 @@ class User {
 
     @Column()
     phone: string;
+
+    @Column({nullable:true})
+    code: number;
 }
 
 export default User

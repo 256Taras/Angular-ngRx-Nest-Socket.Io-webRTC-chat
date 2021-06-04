@@ -1,38 +1,45 @@
-
-
-
-<div class="container">
-  <div class="wrapper">
-    <spna *ngIf="isSubmitting$ | async; else BUTTON"  class="loader-container">
-      <img src="https://ukraine.techsoup.global/sites/all/modules/techsoup/ts_stock/assets/images/loading.gif" alt="" class="loader">
+<div class='container'>
+  <div class='wrapper'>
+    <spna *ngIf='isSubmitting$ | async; else BUTTON' class='loader-container'>
+      <img src='https://ukraine.techsoup.global/sites/all/modules/techsoup/ts_stock/assets/images/loading.gif' alt=''
+           class='loader'>
     </spna>
 
 
-    <ng-template #BUTTON >
-    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
-      <p class="title">Step Phone</p>
-      <input type="tel" mask="_" class="{{
+    <ng-template #BUTTON>
+      <form class='bg-color' [formGroup]='formG' (ngSubmit)='onSubmit()'>
+        <p class='title'>Step Phone</p>
+        <input type='tel' mask='_' class="{{
       formG.get('phone').errors?.required  && formG?.get('phone').touched ||
       formG.get('phone').errors?.maxlength  && formG?.get('phone').touched||
       formG.get('phone').errors?.pattern  && formG?.get('phone').touched
-      ?'error-input' : 'input-item'}}" autocomplete="true" placeholder="+380 xx xxx-xx-xx"
-             formControlName="phone">
-      <am-error-messages *ngIf="backendErrors$ | async" [errorMessages]="backendErrors$ | async"></am-error-messages>
-      <span
-        *ngIf="formG?.get('phone').invalid  && formG?.get('phone').touched  && formG?.get('phone').dirty">
-        <am-error-messages *ngIf="formG?.get('phone').errors?.required" errorMessages="Поле не може бути пусти!">
+      ?'error-input' : 'input-item'}}" autocomplete='true' placeholder='+380 xx xxx-xx-xx'
+               formControlName='phone'>
+        <am-error-messages *ngIf='backendErrors$ | async' [errorMessages]='backendErrors$ | async'></am-error-messages>
+        <span
+          *ngIf="formG?.get('phone').invalid  && formG?.get('phone').touched  && formG?.get('phone').dirty">
+        <am-error-messages *ngIf="formG?.get('phone').errors?.required" errorMessages='Поле не може бути пусти!'>
       </am-error-messages>
-      <am-error-messages *ngIf="formG.get('phone').errors?.maxlength" errorMessages="Забагато цифер!">
+
+      <am-error-messages *ngIf="formG.get('phone').errors?.maxlength" errorMessages='Забагато цифер!'>
       </am-error-messages>
-        <am-error-messages *ngIf="formG.get('phone').errors?.maxlength" errorMessages="Невалідний номер!">
+
+        <am-error-messages *ngIf="formG.get('phone').errors?.maxlength" errorMessages='Невалідний номер!'>
+      </am-error-messages>
+
+        <am-error-messages *ngIf="formG.get('phone').errors?.maxlength" errorMessages='Невалідний номер!'>
       </am-error-messages>
   </span>
 
+       <div class='link-wrapper'>
+         <a [routerLink]="['/sing-in']" class='link-text'>go to sing-in?</a>
 
+         <button class='button-submit' type='submit' [disabled]='formG.invalid' [class.button-disable]='formG.invalid'>
+           next
+         </button>
+       </div>
 
-       <button  class="button-submit" type="submit" [disabled]="formG.invalid"  [class.button-disable]="formG.invalid">next</button>
-
-    </form>
+      </form>
     </ng-template>
   </div>
 </div>

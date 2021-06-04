@@ -11,6 +11,7 @@ import {isSubmittingSelector, UserInitialSelector, UserSelector} from "../../../
 import {iif, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
 import {UserInterface} from "../../../../../shared/interfaces/user.interface";
+import { PrevStepAction } from '../../../../store/action/step.action';
 
 
 @Component({
@@ -86,4 +87,8 @@ export class ChooseAvatarComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.candidateSubscription.unsubscribe()
   }
+
+ public backToPhoneStep():void {
+   this.store.dispatch(PrevStepAction());
+ }
 }

@@ -4,4 +4,5 @@ export interface UserInterface{
     avatar?:string;
     nikname?:string;
     phone?:string;
+    code?:number;
 }

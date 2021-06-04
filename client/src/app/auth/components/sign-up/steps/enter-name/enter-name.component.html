@@ -61,12 +61,14 @@
       </am-error-messages>
   </span>
 
-
+      <div class='link-wrapper'>
+      <button    class="button-submit" (click)="backToPhoneStep()">prev</button>
       <button  class="{{formG.invalid? 'button-disable' :'button-submit' }}" (click)="nextStep()"
               [class.button-disable]="formG.invalid" type="submit" [disabled]="formG.invalid" >next
       </button>
+      </div>
     </div>
-      <button prevStep   class="button-submit" (click)="backToPhoneStep()">prev</button>
+
     </ng-template>
   </div>
 </div>

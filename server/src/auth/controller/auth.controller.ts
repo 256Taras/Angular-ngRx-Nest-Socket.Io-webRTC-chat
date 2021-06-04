@@ -11,20 +11,27 @@ export class AuthController {
     constructor(private authService: AuthService) {
     }
 
-    @Post('sing-in')
-    private singIp(user: UserInterface): Observable<UserInterface> | any {
-        return
+    @Post('send-sms-to-user')
+    private sendSmsToUserPhone(@Body() phone: {phone:string}):  Observable<{ smsEndowed: boolean }> {
+        const userPhone = Object.values(phone)[0]
+        console.log(userPhone);
+        return this.authService.sendSmsToUserPhone(userPhone)
+    }
+
+    @Post('check-user-code')
+    private checkUserCode(@Body('code') code: number, @Body('phone') phone: string): Observable<{ jwt: string; user: User; }> {
+      console.log(code);
+        return this.authService.chekUserCode(code, phone)
     }
 
     @Post('sing-up')
     @UseInterceptors(FileInterceptor('avatar'))
-    private singUp(@UploadedFile() avatar: Express.Multer.File,@Body() candidate: UserInterface): Observable<{ jwt: string, user: User }> | any{
-        return this.authService.singUp(candidate,avatar)
+    private singUp(@UploadedFile() avatar: Express.Multer.File, @Body() candidate: UserInterface): Observable<{ jwt: string, user: User }> | any {
+        return this.authService.singUp(candidate, avatar)
     }
 
     @Post('send-sms')
-    private createCandidate(@Body() data: { phone: string }): Observable<{smsEndowed: true}> {
-
+    private createCandidate(@Body() data: { phone: string }): Observable<{ smsEndowed: true }> {
         return this.authService.sendSMStoPhone2(data.phone)
     }
 

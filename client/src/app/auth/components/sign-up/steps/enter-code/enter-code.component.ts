@@ -51,7 +51,7 @@ export class EnterCodeComponent implements OnInit {
     }
   }
 
-  private initValues() {
+  private initValues():void {
     this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
 
     this.store.pipe(select(UserPhoneSelector)).subscribe(
@@ -61,6 +61,12 @@ export class EnterCodeComponent implements OnInit {
 
     )
   }
+
+  public backToPhoneStep():void {
+    this.store.dispatch(PrevStepAction());
+
+  }
+
 
 
 }

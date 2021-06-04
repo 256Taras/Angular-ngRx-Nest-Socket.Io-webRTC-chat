@@ -41,9 +41,14 @@ export class UserService {
             })
         )
     }
-    public findByPhone(phone: string): Observable<User> {
-        return from(this.userRepository.findOne({phone})).pipe(
+    public findByPhone(phone: string ): Observable<User> {
+        const user = this.userRepository
+          .createQueryBuilder('user')
+          .where("user.phone = :phone" ,{phone})
+          .getOne()
+        return from(user).pipe(
             map((user) => {
+
                 return user
             })
         )
@@ -60,7 +65,12 @@ export class UserService {
 
 
     public update(id: number, updateUserDto: UserInterface) {
-        return `This action updates a #${id} user`;
+        const updateUser = this.userRepository
+          .createQueryBuilder('user')
+          .update(User)
+          .set({code:updateUserDto.code})
+          .where("id = :id", { id })
+          .execute();
     }
 
     public updateAvatar(id: number, updateUserDto: UserInterface) {

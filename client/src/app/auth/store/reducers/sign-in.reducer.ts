@@ -1,32 +1,45 @@
-import {Action, createReducer, on} from '@ngrx/store';
-import { SignInAction } from '../action/sign-in.action';
-import {AddUserInitialsAction} from "../action/sign-up.action";
-
+import { Action, createReducer, on } from '@ngrx/store';
+import { SendSmsToUserAction, SmsConfirmed, SmsEndowedFromUserAction } from '../action/sign-in.action';
 
 
 export interface SingInStateInterface {
-  firstname: null | string;
-  lastname: null | string;
   isSubmitting: boolean;
+  phone: string | null;
+  backendErrors: string | null;
 }
 
 const initialState: SingInStateInterface = {
-  firstname: null,
-  lastname: null,
-  isSubmitting: false
-}
+  isSubmitting: false,
+  phone: null,
+  backendErrors: null
+};
 
 
 const signIn = createReducer(
   initialState,
   on(
-    SignInAction,
+    SendSmsToUserAction,
+    (state,{phone}): SingInStateInterface => ({
+      ...state,
+      isSubmitting: true,
+      phone
+    }),
+  ),
+  on(
+    SmsEndowedFromUserAction,
     (state): SingInStateInterface => ({
       ...state,
-      isSubmitting: true
-    })
+      isSubmitting: false,
+    }),
   ),
-)
+  on(
+    SmsConfirmed,
+    (state,{user}): SingInStateInterface => ({
+      ...state,
+      isSubmitting: false,
+    }),
+  ),
+);
 
 
 export function signInReducer(state: SingInStateInterface, action: Action) {
