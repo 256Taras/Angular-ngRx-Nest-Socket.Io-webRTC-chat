@@ -12,6 +12,7 @@ import {SharedModule} from "./shared/shared.module";
 
 
 
+
 const DTconfig = {
   maxAge: 25, // Retains last 25 states
   logOnly: environment.production, // Restrict extension to log-only mode
@@ -19,7 +20,7 @@ const DTconfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
