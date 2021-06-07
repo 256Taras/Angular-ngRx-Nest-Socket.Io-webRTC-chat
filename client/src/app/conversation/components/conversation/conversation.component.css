@@ -1,0 +1,49 @@
+.conversation__wrapper {
+  margin: 5px 0;
+  padding: 5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: #eeecec;
+  box-shadow: 0px -1px 1px -1px rgba(34, 60, 80, 0.6) inset;
+
+}
+
+.conversation__avatar-wrapper {
+  width: 40px;
+  height: 40px;
+  background: inherit;
+}
+
+.conversation__avatar {
+  width: 100%;
+  background: inherit;
+}
+
+
+.conversation__name {
+  background: #eeecec;
+  font-size: 20px;
+  padding: 0 4px;
+  color: #666666;
+}
+
+.conversation__time-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: inherit;
+}
+
+.conversation__time {
+  background: inherit;
+}
+
+.conversation__container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: #eeecec;
+  width: 100%;
+}

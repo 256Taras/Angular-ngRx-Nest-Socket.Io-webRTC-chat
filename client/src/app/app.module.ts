@@ -9,6 +9,9 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
 import {EffectsModule} from "@ngrx/effects";
 import {SharedModule} from "./shared/shared.module";
+import { ChatModule } from './chat/chat.module';
+import { TopBarModule } from './top-bar/top-bar.module';
+import { ConversationModule } from './conversation/converastion.module';
 
 
 
@@ -25,13 +28,17 @@ const DTconfig = {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AuthModule,
-    SharedModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(DTconfig),
 
-  ],
+
+    AuthModule,
+    SharedModule,
+    ChatModule,
+    TopBarModule,
+
+],
   providers: [],
   bootstrap: [AppComponent]
 })

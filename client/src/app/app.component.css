@@ -1,8 +1,12 @@
-
+*{
+  padding: 0;
+  margin:0;
+  box-sizing: border-box;
+}
 .container {
   max-width: 1170px;
   margin: 0 auto;
-
+height: 100vh;
 }
 
 .input-item {

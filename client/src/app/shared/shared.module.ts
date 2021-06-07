@@ -10,8 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [],
   exports: [
     CommonModule,
-    ErrorMessagesModule,
     HttpClientModule,
+
+
+    ErrorMessagesModule,
   ],
   providers: [
     {

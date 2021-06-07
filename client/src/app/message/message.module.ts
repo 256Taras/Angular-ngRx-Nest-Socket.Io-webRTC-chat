@@ -8,6 +8,9 @@ import { MessageComponent } from './components/message/message.component';
   declarations: [MessageComponent],
   imports: [
     CommonModule
+  ],
+  exports:[
+    MessageComponent
   ]
 })
 export class MessageModule { }

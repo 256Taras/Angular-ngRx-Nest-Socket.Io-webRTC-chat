@@ -1,0 +1,79 @@
+<div class='container'>
+<div class='wrapper'>
+  <div class='chat'>
+
+    <div class='chat__wrapper'>
+      <div class='chat__wrapper-sidebar'>
+        <div class='chat__conversation'>
+          <div class='chat__search'>
+            <input type='text' class='chat__search'>
+          </div>
+          <div class='chat__conversation-item'>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+            <am-conversation></am-conversation>
+          </div>
+        </div>
+      </div>
+      <div class=' chat__conversation-wrapper'>
+        <div class='chat__nav'>
+
+          <div class='chat__icons-wrapper'>
+            <div class='chat__avatar-wrapper'>
+              <img [src]='userAvatar' alt='avatar' class='chat__avatar'>
+            </div>
+            <div class='chat__name-wrapper'>
+              <div class='chat__name'>Bradley Charles</div>
+            </div>
+          </div>
+          <div class='chat__about-user'>
+            <div class='chat__camera-wrapper'>
+              <img [src]='camera' alt='camera' class='chat__camera'>
+            </div>
+
+            <div class='chat__phone-wrapper'>
+              <img [src]='phone' alt='phone' class='chat__phone'>
+            </div>
+
+          </div>
+
+        </div>
+
+       <div class='chat__messages-wrapper'>
+         <div *ngFor="let item of items;" class="{{item %3 ===0 ?'chat__user-message': '' }}">
+            <am-message [me]='item %3 ===0 ? true: null'></am-message>
+         </div>
+       </div>
+
+        <div class='chat__field-wrapper'>
+            <textarea class='chat__field'></textarea>
+          <div class='chat__button-wrapper'>
+            <button class='button-submit'>
+              submit
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>

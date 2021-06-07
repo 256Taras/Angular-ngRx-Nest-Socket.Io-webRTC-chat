@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-message',
+  selector: 'am-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  styleUrls: ['./message.component.css'],
 })
 export class MessageComponent implements OnInit {
+  public faceAvatar: string = 'https://prusamedica.ru/images/usersq.webp';
 
-  constructor() { }
+  @Input('me')
+  public meProps:any
+  constructor() {
+  }
 
   ngOnInit(): void {
+
   }
 
 }
