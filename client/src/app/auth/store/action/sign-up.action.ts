@@ -1,12 +1,12 @@
 import {createAction, props} from "@ngrx/store";
 import {SingUpTypes} from '../types/sing-up.types';
-import {UserInterface} from "../../../shared/interfaces/user.interface";
+import {CandidateInterface} from "../../interfaces/candidate.interface";
 
 
 
 export const AddUserInitialsAction = createAction(
   SingUpTypes.ADD_USER_INITIALS,
-  props<{ user: UserInterface }>()
+  props<{ user: CandidateInterface }>()
 );
 
 export const AddUserPhoneAction = createAction(
@@ -48,7 +48,7 @@ export const SubmittingAction = createAction(
 
 export const SignUpAction = createAction(
   SingUpTypes.START,
-  props<{ candidate: UserInterface }>()
+  props<{ candidate: CandidateInterface }>()
 );
 
 

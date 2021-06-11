@@ -1,9 +1,9 @@
-import {UserInterface} from "../../../shared/interfaces/user.interface";
+import {CandidateInterface} from "../../interfaces/candidate.interface";
 import {Action, createReducer, on} from "@ngrx/store";
 import {AuthSuccessAction} from "../action/user.action";
 
 export interface UserStateInterface {
-  user: UserInterface;
+  user: CandidateInterface;
 }
 
 const initialState: UserStateInterface = {

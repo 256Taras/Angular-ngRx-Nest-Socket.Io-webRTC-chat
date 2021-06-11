@@ -1,15 +1,13 @@
 <div class='conversation__wrapper'>
 
   <div class='conversation__avatar-wrapper'>
-    <img [src]='img' alt='avatar' class='conversation__avatar'>
+    <img src='{{friendAvatar?friendAvatar: img }}' alt='avatar'
+         class='conversation__avatar'>
   </div>
-
-
-
 
   <div class='conversation__time-wrapper'>
     <div class='conversation__text'>
-      Леонардо
+      {{friendName}}
     </div>
     <div class='conversation__text'>
       20 хвилин тому

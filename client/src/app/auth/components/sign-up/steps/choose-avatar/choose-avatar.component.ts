@@ -2,16 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
-import {
-  AddUserAvatarAction,
-  AddUserInitialsAction,
-  SignUpAction
-} from "../../../../store/action/sign-up.action";
+import { AddUserAvatarAction, SignUpAction } from "../../../../store/action/sign-up.action";
 import {isSubmittingSelector, UserInitialSelector, UserSelector} from "../../../../store/selectors/sign-up.selector";
 import {iif, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
-import {UserInterface} from "../../../../../shared/interfaces/user.interface";
+
 import { PrevStepAction } from '../../../../store/action/step.action';
+import { CandidateInterface } from '../../../../interfaces/candidate.interface';
 
 
 @Component({
@@ -27,7 +24,7 @@ export class ChooseAvatarComponent implements OnInit, OnDestroy {
   public imgPath: any | null | string;
   public avatar: string | ArrayBuffer;
   private candidateSubscription: Subscription;
-  private candidate: UserInterface;
+  private candidate: CandidateInterface;
 
 
   constructor(private formBuilder: FormBuilder, private store: Store) {

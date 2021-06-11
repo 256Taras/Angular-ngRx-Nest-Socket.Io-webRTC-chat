@@ -1,6 +1,6 @@
 import {createAction, props} from "@ngrx/store";;
 import {SingInTypes} from "../types/sing-in.types";
-import { UserInterface } from '../../../shared/interfaces/user.interface';
+import { CandidateInterface } from '../../interfaces/candidate.interface';
 
 
 
@@ -18,7 +18,7 @@ export const SmsEndowedFromUserAction = createAction(
 
 export const SmsConfirmed = createAction(
   SingInTypes.SUCCESS,
-  props<{ user: UserInterface }>()
+  props<{ user: CandidateInterface }>()
 )
 
 export const SignInFailureAction = createAction(

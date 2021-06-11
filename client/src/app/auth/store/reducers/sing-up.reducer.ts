@@ -5,13 +5,13 @@ import {
   AddUserPhoneAction, BackEndErrorAction, CheckUserCodeAction,
   SignUpAction, SmsEndowedAction, SubmittingAction, UserCodeSuccessfulConfirm
 } from "../action/sign-up.action";
-import {UserInterface} from "../../../shared/interfaces/user.interface";
+
 import { SmsConfirmed } from '../action/sign-in.action';
-import { SingInStateInterface } from './sign-in.reducer';
+import { CandidateInterface } from '../../interfaces/candidate.interface';
 
 
 export interface SingUpStateInterface {
-  user: UserInterface;
+  user: CandidateInterface;
   isSubmitting: boolean;
   backendErrors: string | null;
   smsEndowed: boolean;

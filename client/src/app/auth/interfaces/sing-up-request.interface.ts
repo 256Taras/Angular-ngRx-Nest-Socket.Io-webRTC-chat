@@ -1,6 +1,6 @@
-import {UserInterface} from "../../shared/interfaces/user.interface";
+import {CandidateInterface} from "./candidate.interface";
 
 export interface SingUpRequestInterface{
-  user:UserInterface;
+  user:CandidateInterface;
   jwt:string
 }
