@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
 import {isSubmittingSelector, UserPhoneSelector} from "../../../../store/selectors/sign-up.selector";
-import {ClearStepStatus, NextStepAction, PrevStepAction} from "../../../../store/action/step.action";
-import {UserInterface} from "../../../../../shared/interfaces/user.interface";
 import {CheckUserCodeAction, SubmittingAction} from "../../../../store/action/sign-up.action";
-import {map} from "rxjs/operators";
+import { PrevStepAction } from '../../../../store/action/step.action';
+
 
 
 @Component({

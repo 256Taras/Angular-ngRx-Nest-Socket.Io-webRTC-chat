@@ -4,8 +4,8 @@ import {Observable} from 'rxjs/internal/Observable';
 import {tap} from 'rxjs/operators';
 
 import {SingUpRequestInterface} from '../interfaces/sing-up-request.interface';
+import { CandidateInterface } from '../interfaces/candidate.interface';
 
-import {UserInterface} from '../../shared/interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -16,10 +16,6 @@ export class AuthService {
   ) {
   }
 
-
-  public singIn() {
-
-  }
 
   public SingUp(candidate): Observable<SingUpRequestInterface> {
     return this.http.post<SingUpRequestInterface>(`${this.baseUrl}/auth/sing-up`, {...candidate}).pipe(
@@ -42,6 +38,6 @@ export class AuthService {
   }
 
   public checkUserCode(code: number, phone: string) {
-    return this.http.post<{ jwt: string; user: UserInterface; }>(`${this.baseUrl}/auth/check-user-code`, {code,phone});
+    return this.http.post<{ jwt: string; user: CandidateInterface; }>(`${this.baseUrl}/auth/check-user-code`, {code,phone});
   }
 }

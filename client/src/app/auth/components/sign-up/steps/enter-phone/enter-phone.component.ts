@@ -8,7 +8,7 @@ import {
   SendUserPhoneAction
 } from "../../../../store/action/sign-up.action";
 import {BackendErrors, isSubmittingSelector, SmsEndowedSelector} from "../../../../store/selectors/sign-up.selector";
-import {UserInterface} from "../../../../../shared/interfaces/user.interface";
+import {CandidateInterface} from "../../../../interfaces/candidate.interface";
 import {NextStepAction} from "../../../../store/action/step.action";
 import {Subscription} from "rxjs";
 import {map} from "rxjs/operators";

@@ -4,7 +4,7 @@ import {Observable} from "rxjs/internal/Observable";
 import {select, Store} from "@ngrx/store";
 import {AddUserInitialsAction, SignUpAction} from "../../../../store/action/sign-up.action";
 import {isSubmittingSelector} from "../../../../store/selectors/sign-up.selector";
-import {UserInterface} from "../../../../../shared/interfaces/user.interface";
+import {CandidateInterface} from "../../../../interfaces/candidate.interface";
 import {ClearStepStatus, NextStepAction, PrevStepAction} from "../../../../store/action/step.action";
 
 @Component({
@@ -51,7 +51,7 @@ export class EnterNameComponent implements OnInit {
   }
 
   nextStep() {
-    const user: UserInterface = {
+    const user: CandidateInterface = {
       nikname: this.formG.value.nikname,
       firstname: this.formG.value.firstname,
       lastname: this.formG.value.lastname,
