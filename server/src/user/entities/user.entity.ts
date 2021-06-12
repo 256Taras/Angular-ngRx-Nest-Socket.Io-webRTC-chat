@@ -24,6 +24,7 @@ class User {
 
     @Column({nullable:true})
     code: number;
+
 }
 
 export default User

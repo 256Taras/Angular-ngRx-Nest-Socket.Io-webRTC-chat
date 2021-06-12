@@ -18,7 +18,7 @@ import * as path from 'path'
         SharedModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [AuthService],
 })
 export class AppModule {
 }

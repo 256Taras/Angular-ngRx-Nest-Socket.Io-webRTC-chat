@@ -5,13 +5,10 @@ import {InjectRepository} from "@nestjs/typeorm";
 import Twilio from "twilio/lib/rest/Twilio";
 import {JwtService} from "@nestjs/jwt";
 import {Repository} from "typeorm";
-
 import {UserInterface} from "../../shared/interface/user.interface";
 import {UserService} from "../../user/service/user.service";
 import User from "../../user/entities/user.entity";
 import Candidate from "../entities/candidate.entity";
-
-
 import {FileService} from 'src/file/service/file.service';
 
 
@@ -94,20 +91,7 @@ export class AuthService {
         )
     }
 
-    public chekUserCode(code: number, phone: string): Observable<{ jwt: string; user: User; }> {
-        return this._findByUserPhone(phone).pipe(
-            switchMap((user: User) => {
-                if (user.code !== code) {
-                    return this._error(this.eMessage, 400)
-                }
-                return this.generateJWT(user).pipe(
-                    map((jwt: string) => {
-                        return {jwt, user}
-                    })
-                )
-            })
-        )
-    }
+ 
 
     public sendSmsToUserPhone(phone: string): Observable<{ smsEndowed: boolean }> {
         // const code = this._generateCode();
@@ -204,6 +188,5 @@ export class AuthService {
     private _error(errorMessage: string, statusCode: number) {
         return throwError(new HttpException(errorMessage, statusCode));
     }
-
 
 }

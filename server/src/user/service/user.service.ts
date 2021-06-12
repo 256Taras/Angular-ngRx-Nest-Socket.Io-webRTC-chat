@@ -11,25 +11,22 @@ import {FileService} from "../../file/service/file.service";
 @Injectable()
 export class UserService {
 
-    constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>,
-
-    ) {}
+    constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
+    }
 
     public create(candidate: UserInterface): Observable<User> {
-
         return this.findByNikname(candidate.nikname).pipe(
             switchMap((userExist) => {
                 if (userExist) {
                     throw new HttpException(`user with nik name:${candidate.nikname} already exist`, 409)
                 }
-
                 return from(this.userRepository.save(candidate)).pipe(
                     map((user)=>{
                         console.log(user)
                         return user
                     })
                 )
+                return from(this.userRepository.save(candidate))
             }), catchError(err => throwError(err))
         )
     }
@@ -41,6 +38,7 @@ export class UserService {
             })
         )
     }
+
     public findByPhone(phone: string ): Observable<User> {
         const user = this.userRepository
           .createQueryBuilder('user')
@@ -76,6 +74,7 @@ export class UserService {
     public updateAvatar(id: number, updateUserDto: UserInterface) {
         return ''
     }
+
 
     public remove(id: number) {
         return from(this.userRepository.findOne({id}))
