@@ -8,6 +8,8 @@ import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
 import {EffectsModule} from "@ngrx/effects";
+import {SharedModule} from "./shared/shared.module";
+
 
 
 
@@ -24,9 +26,11 @@ const DTconfig = {
     BrowserModule,
     AppRoutingModule,
     AuthModule,
+    SharedModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(DTconfig),
+
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 
@@ -6,7 +7,7 @@ class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({nullable:true})
     nikname: string;
 
     @Column()
@@ -15,11 +16,15 @@ class User {
     @Column()
     lastname: string
 
-    @Column()
+    @Column({nullable:true})
     avatar: string;
 
     @Column()
-    phone: number;
+    phone: string;
+
+    @Column({nullable:true})
+    code: number;
+
 }
 
 export default User

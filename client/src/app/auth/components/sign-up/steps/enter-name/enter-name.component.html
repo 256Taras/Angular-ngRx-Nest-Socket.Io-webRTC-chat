@@ -1,7 +1,29 @@
 <div class="container">
   <div class="wrapper">
-    <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
+    <spna *ngIf="isSubmitting$ | async; else BUTTON"  class="loader-container">
+      <img src="https://ukraine.techsoup.global/sites/all/modules/techsoup/ts_stock/assets/images/loading.gif" alt="" class="loader">
+    </spna>
+    <ng-template #BUTTON >
+    <div class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
       <p class="title">Step UserInterface Initials</p>
+
+
+      <input type="text" class="{{
+      formG.get('nikname').errors?.required  && formG?.get('nikname').touched ||
+      formG.get('nikname').errors?.minlength  && formG?.get('nikname').touched ||
+      formG.get('nikname').errors?.maxlength  && formG?.get('nikname').touched
+      ?'error-input' : 'input-item'}}" autocomplete="true" placeholder="nik name" formControlName="nikname">
+
+      <span
+        *ngIf="formG?.get('nikname').invalid  && formG?.get('nikname').touched  && formG?.get('nikname').dirty">
+        <am-error-messages *ngIf="formG?.get('nikname').errors?.required" errorMessages="Поле не може бути пусти!">
+      </am-error-messages>
+      <am-error-messages *ngIf="formG.get('nikname').errors?.minlength" errorMessages="Імя закоротке!">
+      </am-error-messages>
+      <am-error-messages *ngIf="formG.get('nikname').errors?.maxlength" errorMessages="Імя дуже велике!">
+      </am-error-messages>
+  </span>
+
       <input type="text" class="{{
       formG.get('firstname').errors?.required  && formG?.get('firstname').touched ||
       formG.get('firstname').errors?.minlength  && formG?.get('firstname').touched ||
@@ -17,6 +39,10 @@
       <am-error-messages *ngIf="formG.get('firstname').errors?.maxlength" errorMessages="Імя дуже велике!">
       </am-error-messages>
   </span>
+
+
+
+
 
 
       <input type="text" class="{{
@@ -35,9 +61,14 @@
       </am-error-messages>
   </span>
 
-      <button  class="{{formG.invalid? 'button-disable' :'button-submit' }}"
+      <div class='link-wrapper'>
+      <button    class="button-submit" (click)="backToPhoneStep()">prev</button>
+      <button  class="{{formG.invalid? 'button-disable' :'button-submit' }}" (click)="nextStep()"
               [class.button-disable]="formG.invalid" type="submit" [disabled]="formG.invalid" >next
       </button>
-    </form>
+      </div>
+    </div>
+
+    </ng-template>
   </div>
 </div>

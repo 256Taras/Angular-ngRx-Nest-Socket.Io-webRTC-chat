@@ -2,8 +2,8 @@ import {AfterContentInit, Component, ContentChildren, OnInit, QueryList} from '@
 import {select, Store} from "@ngrx/store";
 
 import {NextStepSelector, PrevStepSelector} from "../../../store/selectors/step.selector";
-import { ClearStepStatus } from 'src/app/auth/store/action-creators/step.action';
-import { Subscription } from 'rxjs';
+import {ClearStepStatus} from 'src/app/auth/store/action/step.action';
+import {Subscription} from 'rxjs';
 import {StepContainerComponent} from "../step-container/step-container.component";
 
 
@@ -13,7 +13,7 @@ import {StepContainerComponent} from "../step-container/step-container.component
   styleUrls: ['./step.component.css'],
 
 })
-export class StepComponent implements OnInit ,AfterContentInit {
+export class StepComponent implements OnInit, AfterContentInit {
 
   public activeIndex: number = 0;
   public itemLength: number;
@@ -30,19 +30,20 @@ export class StepComponent implements OnInit ,AfterContentInit {
 
   public ngOnInit(): void {
 
-    this.isNext$ = this.store.pipe(select(NextStepSelector)).subscribe((next)=>{
-        if (next){
-          this.next()
-         this.store.dispatch(ClearStepStatus())
-        }
+    this.isNext$ = this.store.pipe(select(NextStepSelector)).subscribe((next:boolean) => {
+      console.log('subscribe')
+   if (next){
+     this.next()
+
+     this.store.dispatch(ClearStepStatus())
+   }
 
     })
-    this.isPrev$ = this.store.pipe(select(PrevStepSelector)).subscribe((prev)=>{
-        if (prev){
-          this.prev()
-          console.log('dev')
-          this.store.dispatch(ClearStepStatus())
-        }
+    this.isPrev$ = this.store.pipe(select(PrevStepSelector)).subscribe((prev:boolean) => {
+    if (prev){
+      this.prev()
+      this.store.dispatch(ClearStepStatus())
+    }
     })
   }
 
@@ -71,9 +72,9 @@ export class StepComponent implements OnInit ,AfterContentInit {
   }
 
   private decreaseStep() {
-      if (this.activeIndex > 0) {
-        this.activeIndex--;
-        this.setActiveActiveStep(this.activeIndex)
+    if (this.activeIndex > 0) {
+      this.activeIndex--;
+      this.setActiveActiveStep(this.activeIndex)
     }
   }
 
@@ -90,7 +91,7 @@ export class StepComponent implements OnInit ,AfterContentInit {
   }
 
   private removeActiveStep() {
-    this.stepList.map((step:StepContainerComponent) => {
+    this.stepList.map((step: StepContainerComponent) => {
       if (step.isActive) {
         step.isActive = false;
       }
@@ -98,7 +99,7 @@ export class StepComponent implements OnInit ,AfterContentInit {
   }
 
   private initStepIndex() {
-    this.stepList.forEach((step:StepContainerComponent, i:number) => (step.stepIndex = i));
+    this.stepList.forEach((step: StepContainerComponent, i: number) => (step.stepIndex = i));
   }
 
   private get activeStep(): StepContainerComponent {

@@ -18,6 +18,7 @@ export class StepContainerComponent implements OnInit {
 
    @Input()
   public set activeState(step) {
+
     this.isActive = step === this;
   }
 

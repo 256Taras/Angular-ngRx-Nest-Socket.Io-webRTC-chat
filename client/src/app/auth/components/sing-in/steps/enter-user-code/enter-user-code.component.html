@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="wrapper">
+    <spna *ngIf="isSubmitting$ | async; else BUTTON"  class="loader-container">
+      <img src="https://ukraine.techsoup.global/sites/all/modules/techsoup/ts_stock/assets/images/loading.gif" alt="" class="loader">
+    </spna>
+    <ng-template #BUTTON >
+      <form class="bg-color" [formGroup]="formG" (ngSubmit)="onSubmit()">
+        <p class="title">Enter Code</p>
+        <input type="number" min="0"    class="input-item" autocomplete="true"   placeholder="x-x-x-x" formControlName="code"  maxlength="4">
+
+
+        <button
+          class="{{formG.invalid? 'button-disable' :'button-submit' }}"
+          [class.button-disable]="formG.invalid" type="submit" [disabled]="formG.invalid">next</button>
+      </form>
+      <button prevStep  class="button-submit" >prev</button>
+    </ng-template>
+
+
+  </div>
+
+</div>
