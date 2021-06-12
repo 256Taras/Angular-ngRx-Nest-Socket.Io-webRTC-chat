@@ -9,13 +9,15 @@ import { chatReducer } from './services/store/reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ChatService } from './services/api/chat.service';
 import { ChatEffect } from './services/store/effect';
+import { AuthGuard } from '../shared/guards/auth.guard';
 
 
 
 const routes = [
   {
     path:'',
-    component:ChatComponent
+    component:ChatComponent,
+    canActivate: [AuthGuard]
   }
 ]
 
