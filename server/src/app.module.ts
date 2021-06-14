@@ -22,7 +22,7 @@ import * as path from 'path'
         MessagesModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [AuthService],
 })
 export class AppModule {
 }

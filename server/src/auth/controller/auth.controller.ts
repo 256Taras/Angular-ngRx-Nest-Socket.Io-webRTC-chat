@@ -4,6 +4,7 @@ import {UserInterface} from "../../shared/interface/user.interface";
 import {Observable} from 'rxjs';
 import User from "../../user/entities/user.entity";
 import {FileInterceptor} from "@nestjs/platform-express";
+import {map} from "rxjs/operators";
 
 
 @Controller('auth')
@@ -41,5 +42,6 @@ export class AuthController {
         return this.authService.chekCode(candidate.phone, Number(candidate.code))
     }
 }
+
 
 

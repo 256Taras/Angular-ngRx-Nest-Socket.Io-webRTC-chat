@@ -1,6 +1,5 @@
 import {forwardRef, Module} from '@nestjs/common';
 import {TypeOrmModule} from "@nestjs/typeorm";
-
 import {AuthController} from './controller/auth.controller';
 import {AuthService} from "./service/auth.service";
 import {JwtStrategy} from "./guard/jwt.strategy";
@@ -35,3 +34,4 @@ import {FileModule} from "../file/file.module";
 })
 export class AuthModule {
 }
+

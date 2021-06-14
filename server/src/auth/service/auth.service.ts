@@ -1,18 +1,32 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { from, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
-import { InjectRepository } from '@nestjs/typeorm';
-import Twilio from 'twilio/lib/rest/Twilio';
-import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
 
-import { UserInterface } from '../../shared/interface/user.interface';
-import { UserService } from '../../user/service/user.service';
-import User from '../../user/entities/user.entity';
-import Candidate from '../entities/candidate.entity';
+// import { HttpException, Inject, Injectable } from '@nestjs/common';
+// import { from, Observable, of, throwError } from 'rxjs';
+// import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+// import { InjectRepository } from '@nestjs/typeorm';
+// import Twilio from 'twilio/lib/rest/Twilio';
+// import { JwtService } from '@nestjs/jwt';
+// import { Repository } from 'typeorm';
+
+// import { UserInterface } from '../../shared/interface/user.interface';
+// import { UserService } from '../../user/service/user.service';
+// import User from '../../user/entities/user.entity';
+// import Candidate from '../entities/candidate.entity';
 
 
-import { FileService } from 'src/file/service/file.service';
+// import { FileService } from 'src/file/service/file.service';
+
+import {HttpException, Inject, Injectable} from '@nestjs/common';
+import {from, Observable, of, throwError} from "rxjs";
+import {catchError, concatMap, map, switchMap} from "rxjs/operators";
+import {InjectRepository} from "@nestjs/typeorm";
+import Twilio from "twilio/lib/rest/Twilio";
+import {JwtService} from "@nestjs/jwt";
+import {Repository} from "typeorm";
+import {UserInterface} from "../../shared/interface/user.interface";
+import {UserService} from "../../user/service/user.service";
+import User from "../../user/entities/user.entity";
+import Candidate from "../entities/candidate.entity";
+import {FileService} from 'src/file/service/file.service';
 
 
 @Injectable()
@@ -125,6 +139,7 @@ export class AuthService {
                 return { smsEndowed: true };
               }
             }),
+
           );
         }
       }),
@@ -167,6 +182,72 @@ export class AuthService {
               }
           })
       )
+
+            switchMap(({phone, code}: Candidate) => {
+                return this._twilioParams(phone, code)
+            }),
+            catchError(err => throwError(err))
+        )
+
+    }
+
+
+    public chekCode(phone: string, codeForChek: number): Observable<{ confirmed: boolean }> {
+
+        return this._findByCandidatePhone(phone).pipe(
+            concatMap(({code, phone, id}: Candidate) => {
+                if (code !== codeForChek) {
+                    return this._error(this.eMessage, 400)
+                }
+                return from(this.candidateRepository.update(id, {isApproved: true})).pipe(
+                    map((value) => {
+                        return {confirmed: true}
+                    })
+                )
+
+            })
+        )
+    }
+
+ 
+
+    public sendSmsToUserPhone(phone: string): Observable<{ smsEndowed: boolean }> {
+        // const code = this._generateCode();
+        const code = 1111;
+        return this._findByUserPhone(phone).pipe(
+            concatMap((user) => {
+                if (!user) {
+                    return this._error('Цей телефон не зареєстрований!', 400);
+                }
+                if (user) {
+                    return this._twilioParams(phone, code).pipe(
+                        map(({smsEndowed}) => {
+                          if (smsEndowed){
+                              this.userService.update(user.id, {code});
+                            return {smsEndowed:true};
+                          }
+                        })
+                    )
+                }
+            }),
+            catchError(err => throwError(err))
+        )
+    }
+
+
+    /*
+
+         const eMessage = `Невірний код!`
+        return this._findByCandidatePhone(phone).pipe(
+            switchMap(({code, phone}: CandidateInterface) => {
+                if (code === codeForChek) {
+                    return of({confirmed: true})
+                }
+                return this._error(eMessage, 400)
+            }),
+            catchError(err => throwError(err))
+        )
+
 
      */
 
@@ -211,7 +292,6 @@ export class AuthService {
   private _error(errorMessage: string, statusCode: number) {
     return throwError(new HttpException(errorMessage, statusCode));
   }
-
 
 }
 

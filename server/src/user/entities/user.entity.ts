@@ -8,31 +8,34 @@ import Message from '../../messages/entities/message.entity';
 @Entity()
 class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  public  id: number;
 
   @Column({ nullable: true })
-  nikname: string;
+  public  nikname: string;
 
   @Column()
-  firstname: string;
+  public firstname: string;
 
   @Column()
-  lastname: string;
+  public  lastname: string;
 
   @Column({ nullable: true })
-  avatar: string;
+  public  avatar: string;
 
   @Column()
-  phone: string;
+  public phone: string;
 
   @Column({ nullable: true })
-  code: number;
+  public code: number;
 
   @ManyToMany(() => Conversation, (conversation: Conversation) => conversation.users)
   public conversation: Conversation[];
 
+
   @OneToMany(type => Message, message => message.user)
-  messages: Message[];
+  public messages: Message[];
+
+
 }
 
 export default User;
