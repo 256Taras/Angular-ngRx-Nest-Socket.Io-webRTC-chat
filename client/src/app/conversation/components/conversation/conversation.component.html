@@ -1,7 +1,7 @@
 <div class='conversation__wrapper'>
 
   <div class='conversation__avatar-wrapper'>
-    <img src='{{friendAvatar?friendAvatar: img }}' alt='avatar'
+    <img src='{{friendAvatar?"http://localhost:3000/"+friendAvatar: img }}' alt='avatar'
          class='conversation__avatar'>
   </div>
 

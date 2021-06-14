@@ -26,6 +26,7 @@ import { SingInEffect } from './store/effects/sing-in.effect';
 import { EnterUserPhoneComponent } from './components/sing-in/steps/enter-user-phone/enter-user-phone.component';
 import { EnterUserCodeComponent } from './components/sing-in/steps/enter-user-code/enter-user-code.component';
 import { WelcomeComponent } from './components/sign-up/steps/welcome/welcome.component';
+import {JwtHelperService, JWT_OPTIONS} from "@auth0/angular-jwt";
 
 
 const routes: Routes = [
@@ -68,6 +69,10 @@ const routes: Routes = [
 
   ],
   providers: [
+    {
+      provide:'JWT_HELPER',
+      useFactory:()=> new JwtHelperService (),
+    },
     AuthService,
     StorageService,
   ],
