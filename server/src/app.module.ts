@@ -5,6 +5,8 @@ import {ConfigModule} from "@nestjs/config";
 import {AuthModule} from './auth/auth.module';
 import {SharedModule} from "./shared/shared.module";
 import {ServeStaticModule} from '@nestjs/serve-static';
+import { ConversationModule } from './conversation/conversation.module';
+import { MessagesModule } from './messages/messages.module';
 import * as path from 'path'
 
 
@@ -16,6 +18,8 @@ import * as path from 'path'
         DatabaseModule,
         AuthModule,
         SharedModule,
+        ConversationModule,
+        MessagesModule,
     ],
     controllers: [],
     providers: [],

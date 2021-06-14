@@ -77,6 +77,13 @@ export class UserService {
         return ''
     }
 
+    public async findUsersByIds(ids:number[]):Promise<User[]>{
+       return await this.userRepository
+          .createQueryBuilder('user')
+          .where("user.id IN (:...ids)", { ids })
+          .getMany();
+    }
+
     public remove(id: number) {
         return from(this.userRepository.findOne({id}))
     }
